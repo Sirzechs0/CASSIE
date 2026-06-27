@@ -112,6 +112,48 @@ main {
   font-size: 0.92rem;
 }
 
+/* ---------- Forms (reusable for any admin upload form) ---------- */
+.form-card {
+  border: 1px solid var(--ink);
+  padding: 28px 24px;
+  margin-bottom: 36px;
+}
+.form-card h2 { font-size: 1.1rem; margin: 0 0 18px; }
+.form-field { margin-bottom: 16px; }
+.form-field label {
+  display: block; font-size: 0.78rem; text-transform: uppercase;
+  letter-spacing: 0.06em; margin-bottom: 6px; color: var(--muted);
+}
+.form-field input,
+.form-field textarea {
+  width: 100%; padding: 10px 12px; border: 1px solid var(--line);
+  background: var(--paper); color: var(--ink); font-size: 0.95rem;
+  font-family: inherit;
+}
+.form-field input:focus,
+.form-field textarea:focus { outline: none; border-color: var(--ink); }
+
+.btn-primary {
+  padding: 11px 20px; background: var(--ink); color: var(--paper);
+  border: none; font-size: 0.92rem; font-weight: 600; cursor: pointer;
+}
+.btn-primary:hover { opacity: 0.85; }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.status-text { font-size: 0.85rem; margin-top: 10px; min-height: 1.2em; color: var(--muted); }
+.status-error { color: var(--error); }
+
+/* ---------- Announcement feed ---------- */
+.feed-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+.announcement-card { border: 1px solid var(--line); overflow: hidden; }
+.announcement-card img { width: 100%; display: block; }
+.announcement-card p { padding: 12px 14px; margin: 0; font-size: 0.88rem; }
+.muted { color: var(--muted); font-size: 0.9rem; }
+
 /* ---------- Footer ---------- */
 .site-footer {
   border-top: 1px solid var(--line);

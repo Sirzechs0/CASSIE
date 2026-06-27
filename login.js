@@ -38,10 +38,12 @@ form.addEventListener("submit", async (event) => {
       sessionStorage.setItem("cassieRole", role);
       sessionStorage.setItem("cassieEmail", email);
 
-      statusMessage.textContent = `Logged in successfully as ${role}.`;
+      statusMessage.textContent = `Logged in successfully as ${role}. Redirecting...`;
 
-      // Once feature pages are role-aware, uncomment this to auto-redirect:
-      // window.location.href = "index.html";
+      // Brief pause so the success message is actually visible before leaving
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 800);
     } else {
       // This account exists in Firebase Auth but has no matching role
       // document yet — see the README for how to fix this.
