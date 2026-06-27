@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Staff Login | PCSHS SMS</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .login-wrap {
+    min-height: calc(100vh - 140px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .login-card {
+    width: 100%;
+    max-width: 380px;
+    border: 1px solid var(--ink);
+    padding: 40px 32px;
+  }
+  .login-card h1 { font-size: 1.3rem; margin: 0 0 4px; }
+  .login-card .subtitle { color: var(--muted); font-size: 0.88rem; margin: 0 0 28px; }
+  .login-card label {
+    display: block; font-size: 0.78rem; text-transform: uppercase;
+    letter-spacing: 0.06em; margin-bottom: 6px; color: var(--muted);
+  }
+  .login-card input {
+    width: 100%; padding: 11px 12px; margin-bottom: 18px;
+    border: 1px solid var(--line); background: var(--paper);
+    color: var(--ink); font-size: 0.95rem;
+  }
+  .login-card input:focus { outline: none; border-color: var(--ink); }
+  .login-card button {
+    width: 100%; padding: 12px; background: var(--ink); color: var(--paper);
+    border: none; font-size: 0.95rem; font-weight: 600; cursor: pointer;
+    letter-spacing: 0.02em;
+  }
+  .login-card button:hover { opacity: 0.85; }
+  .login-card button:disabled { opacity: 0.5; cursor: not-allowed; }
+  #status-message { margin-top: 16px; font-size: 0.85rem; min-height: 1.2em; }
+  #error-message { margin-top: 16px; font-size: 0.85rem; color: var(--error); min-height: 1.2em; }
+  .login-card .footnote {
+    margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--line);
+    font-size: 0.8rem; color: var(--muted); text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div id="suspension-banner" class="suspension-banner" hidden></div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="index.html">
+      <img src="logo.png" alt="PCSHS logo">
+      <span>PCSHS SMS</span>
+    </a>
+  </div>
+</header>
+
+<div class="login-wrap">
+  <div class="login-card">
+    <h1>Staff &amp; Admin Login</h1>
+    <p class="subtitle">Sign in to manage school records and announcements.</p>
+
+    <form id="login-form">
+      <label for="email">Email</label>
+      <input type="email" id="email" required autocomplete="username">
+
+      <label for="password">Password</label>
+      <input type="password" id="password" required autocomplete="current-password">
+
+      <button type="submit" id="login-button">Log In</button>
+    </form>
+
+    <p id="status-message"></p>
+    <p id="error-message"></p>
+
+    <p class="footnote">Accounts are issued by the system administrator.<br>Students and visitors don't need an account to view the site.</p>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <p>Pasig City Science High School — C.A.S.S.I.E.</p>
+</footer>
+
+<script type="module" src="login.js"></script>
+</body>
+</html>
