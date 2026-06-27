@@ -22,7 +22,7 @@
     <a class="brand" href="index.html">
       <img src="logo.png" alt="PCSHS logo">
       <span class="brand-text">
-        <span class="brand-name">PCSHS SMS</span>
+        <span class="brand-name">Pasig City Science High School</span>
         <span class="brand-tagline">We Excel, We Serve, We Lead</span>
       </span>
     </a>
@@ -37,7 +37,8 @@
       <a href="staff-directory.html" class="active">Staff Directory</a>
     </nav>
     <div class="header-actions">
-      <a class="login-link" href="login.html">Staff Login</a>
+      <a class="login-link" href="login.html" id="login-link">Log In</a>
+      <button class="login-link" id="logout-button" type="button" hidden>Log Out</button>
       <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark/light mode">☀️</button>
     </div>
   </div>
@@ -58,6 +59,7 @@
   <p>Pasig City Science High School — C.A.S.S.I.E.</p>
 </footer>
 
+<script type="module" src="auth-ui.js"></script>
 <script src="theme.js"></script>
 </body>
 </html>
