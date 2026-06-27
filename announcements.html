@@ -2,6 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script>
+  (function () {
+    if (localStorage.getItem("cassieTheme") === "light") {
+      document.documentElement.setAttribute("data-theme", "light");
+    }
+  })();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Announcements | PCSHS SMS</title>
 <link rel="stylesheet" href="style.css">
@@ -27,6 +34,7 @@
       <a href="staff-directory.html">Staff Directory</a>
     </nav>
     <a class="login-link" href="login.html">Staff Login</a>
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark/light mode">☀️</button>
   </div>
 </header>
 
@@ -36,8 +44,31 @@
     <p>Official school notices and staff-uploaded pubmats.</p>
   </div>
 
-  <div class="placeholder-box">
-    This feature is being built next — check back soon.
+  <div id="upload-section" class="form-card" hidden>
+    <h2>Post a New Announcement</h2>
+    <form id="upload-form">
+      <div class="form-field">
+        <label for="pubmat-caption">Caption (optional)</label>
+        <input type="text" id="pubmat-caption" placeholder="e.g. Foundation Day schedule">
+      </div>
+
+      <div class="form-field">
+        <label>Pubmat Image</label>
+        <div id="upload-dropzone" class="upload-dropzone">
+          <span id="upload-dropzone-text">📷 Click to choose a photo, or drag one here</span>
+          <img id="upload-preview" class="upload-preview" hidden>
+        </div>
+        <input type="file" id="pubmat-file" accept="image/*" hidden required>
+        <button type="button" id="remove-preview-btn" class="btn-secondary" hidden>Remove photo</button>
+      </div>
+
+      <button type="submit" id="upload-button" class="btn-primary">Post Announcement</button>
+    </form>
+    <p id="upload-status" class="status-text"></p>
+  </div>
+
+  <div id="announcements-feed" class="feed-grid">
+    <p class="muted">Loading announcements...</p>
   </div>
 </main>
 
@@ -45,5 +76,7 @@
   <p>Pasig City Science High School — C.A.S.S.I.E.</p>
 </footer>
 
+<script type="module" src="announcements.js"></script>
+<script src="theme.js"></script>
 </body>
 </html>

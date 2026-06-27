@@ -2,6 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script>
+  (function () {
+    if (localStorage.getItem("cassieTheme") === "light") {
+      document.documentElement.setAttribute("data-theme", "light");
+    }
+  })();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Staff Login | PCSHS SMS</title>
 <link rel="stylesheet" href="style.css">
@@ -56,6 +63,7 @@
       <img src="logo.png" alt="PCSHS logo">
       <span>PCSHS SMS</span>
     </a>
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark/light mode">☀️</button>
   </div>
 </header>
 
@@ -86,5 +94,6 @@
 </footer>
 
 <script type="module" src="login.js"></script>
+<script src="theme.js"></script>
 </body>
 </html>

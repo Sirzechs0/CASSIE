@@ -1,6 +1,16 @@
 /* style.css — shared styles for every C.A.S.S.I.E. / PCSHS SMS page */
 
 :root {
+  /* Dark mode is the default look */
+  --ink: #f2f2f2;
+  --paper: #0d0d0d;
+  --line: #2e2e2e;
+  --muted: #9c9c9c;
+  --error: #ff7a7a;
+  --banner: #f2f2f2;
+}
+
+[data-theme="light"] {
   --ink: #0a0a0a;
   --paper: #ffffff;
   --line: #d9d9d9;
@@ -17,6 +27,7 @@ body {
   color: var(--ink);
   font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
   line-height: 1.5;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 a { color: var(--ink); text-decoration: none; }
@@ -81,6 +92,19 @@ a:hover { text-decoration: underline; }
 }
 .login-link:hover { background: var(--ink); color: var(--paper); text-decoration: none; }
 
+.theme-toggle {
+  border: 1px solid var(--ink);
+  background: var(--paper);
+  color: var(--ink);
+  width: 36px;
+  height: 36px;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.theme-toggle:hover { background: var(--ink); color: var(--paper); }
+
 /* ---------- Page layout ---------- */
 main {
   max-width: 1080px;
@@ -140,8 +164,33 @@ main {
 .btn-primary:hover { opacity: 0.85; }
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
+.btn-secondary {
+  background: none; border: 1px solid var(--line); color: var(--ink);
+  padding: 8px 14px; font-size: 0.85rem; cursor: pointer; margin-bottom: 16px;
+}
+.btn-secondary:hover { border-color: var(--ink); }
+
 .status-text { font-size: 0.85rem; margin-top: 10px; min-height: 1.2em; color: var(--muted); }
 .status-error { color: var(--error); }
+
+/* ---------- Facebook-style image upload ---------- */
+.upload-dropzone {
+  border: 1px dashed var(--line);
+  padding: 32px;
+  text-align: center;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+.upload-dropzone:hover { border-color: var(--ink); color: var(--ink); }
+.upload-dropzone.dragover { border-color: var(--ink); color: var(--ink); background: rgba(128,128,128,0.08); }
+.upload-preview {
+  max-width: 100%;
+  max-height: 260px;
+  display: block;
+  margin: 0 auto;
+}
 
 /* ---------- Announcement feed ---------- */
 .feed-grid {

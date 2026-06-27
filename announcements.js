@@ -10,12 +10,62 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
 // ⬇️ Paste your ImgBB API key between the quotes below.
-const IMGBB_API_KEY = "754dc00724f82fbc2b3d4f2882ac267d";
+const IMGBB_API_KEY = "PASTE_YOUR_IMGBB_API_KEY_HERE";
+
 const uploadSection = document.getElementById("upload-section");
 const uploadForm = document.getElementById("upload-form");
 const uploadStatus = document.getElementById("upload-status");
 const uploadButton = document.getElementById("upload-button");
 const feedContainer = document.getElementById("announcements-feed");
+
+const dropzone = document.getElementById("upload-dropzone");
+const dropzoneText = document.getElementById("upload-dropzone-text");
+const fileInput = document.getElementById("pubmat-file");
+const previewImg = document.getElementById("upload-preview");
+const removeBtn = document.getElementById("remove-preview-btn");
+
+// ---------- Facebook-style upload zone: click, drag-drop, preview, remove ----------
+dropzone.addEventListener("click", () => fileInput.click());
+
+dropzone.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  dropzone.classList.add("dragover");
+});
+dropzone.addEventListener("dragleave", () => dropzone.classList.remove("dragover"));
+dropzone.addEventListener("drop", (e) => {
+  e.preventDefault();
+  dropzone.classList.remove("dragover");
+  if (e.dataTransfer.files.length) {
+    fileInput.files = e.dataTransfer.files;
+    showPreview(e.dataTransfer.files[0]);
+  }
+});
+
+fileInput.addEventListener("change", () => {
+  if (fileInput.files.length) {
+    showPreview(fileInput.files[0]);
+  }
+});
+
+removeBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  fileInput.value = "";
+  previewImg.hidden = true;
+  previewImg.src = "";
+  dropzoneText.hidden = false;
+  removeBtn.hidden = true;
+});
+
+function showPreview(file) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    previewImg.src = reader.result;
+    previewImg.hidden = false;
+    dropzoneText.hidden = true;
+    removeBtn.hidden = false;
+  };
+  reader.readAsDataURL(file);
+}
 
 // ---------- Part 1: show/hide the upload form based on login + role ----------
 onAuthStateChanged(auth, async (user) => {
@@ -74,7 +124,6 @@ loadAnnouncements();
 uploadForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  const fileInput = document.getElementById("pubmat-file");
   const captionInput = document.getElementById("pubmat-caption");
   const file = fileInput.files[0];
 
@@ -100,6 +149,10 @@ uploadForm.addEventListener("submit", async (event) => {
 
     uploadStatus.textContent = "Announcement posted successfully.";
     uploadForm.reset();
+    previewImg.hidden = true;
+    previewImg.src = "";
+    dropzoneText.hidden = false;
+    removeBtn.hidden = true;
     loadAnnouncements();
   } catch (error) {
     uploadStatus.textContent = "Something went wrong: " + error.message;
