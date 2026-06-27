@@ -21,7 +21,10 @@
   <div class="header-inner">
     <a class="brand" href="index.html">
       <img src="logo.png" alt="PCSHS logo">
-      <span>PCSHS SMS</span>
+      <span class="brand-text">
+        <span class="brand-name">PCSHS SMS</span>
+        <span class="brand-tagline">We Excel, We Serve, We Lead</span>
+      </span>
     </a>
     <nav class="site-nav">
       <a href="index.html" class="active">Dashboard</a>
@@ -33,13 +36,27 @@
       <a href="clubs.html">Clubs</a>
       <a href="staff-directory.html">Staff Directory</a>
     </nav>
-    <a class="login-link" href="login.html">Staff Login</a>
-    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark/light mode">☀️</button>
+    <div class="header-actions">
+      <a class="login-link" href="login.html">Staff Login</a>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark/light mode">☀️</button>
+    </div>
   </div>
 </header>
 
 <main>
-  <div class="page-header">
+  <div id="hero" class="hero" hidden>
+    <div class="hero-image-wrap">
+      <img id="hero-image" src="" alt="">
+    </div>
+    <div class="hero-body">
+      <span class="hero-tag">Latest Announcement</span>
+      <h1 id="hero-title"></h1>
+      <p id="hero-caption">Posted on the Announcements page — check it out for the full details.</p>
+      <a href="announcements.html" class="btn-primary">View All Announcements →</a>
+    </div>
+  </div>
+
+  <div id="hero-fallback" class="page-header">
     <h1>Welcome to C.A.S.S.I.E.</h1>
     <p>Centralized Academic and School Services Information Engine — Pasig City Science High School.</p>
   </div>
@@ -87,6 +104,7 @@
   <p>Pasig City Science High School — C.A.S.S.I.E.</p>
 </footer>
 
+<script type="module" src="dashboard.js"></script>
 <script src="theme.js"></script>
 </body>
 </html>
