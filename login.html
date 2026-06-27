@@ -25,7 +25,8 @@
     max-width: 380px;
     background: var(--surface);
     border: 1px solid var(--line);
-    box-shadow: 0 10px 30px var(--shadow);
+    border-radius: var(--radius-md);
+    box-shadow: 0 16px 40px var(--shadow);
     padding: 40px 32px;
   }
   .login-card h1 { font-size: 1.3rem; margin: 0 0 4px; }
@@ -36,16 +37,17 @@
   }
   .login-card input {
     width: 100%; padding: 11px 12px; margin-bottom: 18px;
-    border: 1px solid var(--line); background: var(--paper);
-    color: var(--ink); font-size: 0.95rem;
+    border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--paper);
+    color: var(--ink); font-size: 0.95rem; transition: border-color 0.18s var(--ease);
   }
   .login-card input:focus { outline: none; border-color: var(--ink); }
   .login-card button {
     width: 100%; padding: 12px; background: var(--ink); color: var(--paper);
-    border: none; font-size: 0.95rem; font-weight: 600; cursor: pointer;
-    letter-spacing: 0.02em;
+    border: none; border-radius: var(--radius-sm); font-size: 0.95rem; font-weight: 600; cursor: pointer;
+    letter-spacing: 0.02em; transition: opacity 0.18s var(--ease), transform 0.15s var(--ease);
   }
-  .login-card button:hover { opacity: 0.85; }
+  .login-card button:hover { opacity: 0.85; transform: translateY(-1px); }
+  .login-card button:active { transform: scale(0.97); }
   .login-card button:disabled { opacity: 0.5; cursor: not-allowed; }
   #status-message { margin-top: 16px; font-size: 0.85rem; min-height: 1.2em; }
   #error-message { margin-top: 16px; font-size: 0.85rem; color: var(--error); min-height: 1.2em; }

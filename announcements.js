@@ -10,7 +10,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
 // ⬇️ Paste your ImgBB API key between the quotes below.
-const IMGBB_API_KEY = "PASTE_YOUR_IMGBB_API_KEY_HERE";
+const IMGBB_API_KEY = "d40920dd92b750f2a83459dcff350957";
 
 const uploadSection = document.getElementById("upload-section");
 const uploadForm = document.getElementById("upload-form");
