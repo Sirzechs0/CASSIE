@@ -51,8 +51,28 @@
     <p>Searchable answers to commonly asked questions.</p>
   </div>
 
-  <div class="placeholder-box">
-    This feature is being built next — check back soon.
+  <div id="faq-admin" class="form-card" hidden>
+    <h2>Add a New FAQ</h2>
+    <form id="faq-form">
+      <div class="form-field">
+        <label for="faq-question">Question</label>
+        <input type="text" id="faq-question" required placeholder="e.g. How do I report a lost item?">
+      </div>
+      <div class="form-field">
+        <label for="faq-answer">Answer</label>
+        <textarea id="faq-answer" rows="3" required placeholder="Type the answer here..."></textarea>
+      </div>
+      <button type="submit" id="faq-save-btn" class="btn-primary">Add FAQ</button>
+    </form>
+    <p id="faq-status" class="status-text"></p>
+  </div>
+
+  <div class="form-field">
+    <input type="text" id="faq-search" placeholder="Search FAQs...">
+  </div>
+
+  <div id="faq-list" style="margin-top: 20px;">
+    <p class="muted">Loading FAQs...</p>
   </div>
 </main>
 
@@ -60,8 +80,10 @@
   <p>Pasig City Science High School — C.A.S.S.I.E.</p>
 </footer>
 
+<script type="module" src="faqs.js"></script>
 <script type="module" src="auth-ui.js"></script>
 <script src="nav.js"></script>
+<script type="module" src="suspension-banner.js"></script>
 <script src="theme.js"></script>
 </body>
 </html>
