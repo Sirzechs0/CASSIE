@@ -48,11 +48,53 @@
 <main>
   <div class="page-header">
     <h1>Attendance</h1>
-    <p>Digital attendance records with automatic late detection.</p>
+    <p id="attendance-date"></p>
   </div>
 
-  <div class="placeholder-box">
-    This feature is being built next — check back soon.
+  <!-- Admin-only tools: only shown when logged in as admin/staff -->
+  <div id="admin-tools" class="admin-tools" hidden>
+    <button id="import-btn" class="btn-secondary">📄 Import Class List from PDF</button>
+  </div>
+
+  <!-- Grade level tabs (populated by JS) -->
+  <div class="tab-bar" id="grade-tabs"></div>
+
+  <!-- Section tabs for selected grade (populated by JS) -->
+  <div class="tab-bar" id="section-tabs"></div>
+
+  <!-- Class info header -->
+  <div id="class-header" class="class-header" hidden>
+    <div class="class-header-main">
+      <h2 id="class-title"></h2>
+      <p id="class-adviser"></p>
+    </div>
+    <div class="class-header-stats">
+      <span class="stat-present">Present <strong id="stat-present">0</strong></span>
+      <span class="stat-late">Late <strong id="stat-late">0</strong></span>
+      <span class="stat-absent">Absent <strong id="stat-absent">0</strong></span>
+      <span>Total <strong id="stat-total">0</strong></span>
+    </div>
+  </div>
+
+  <!-- Attendance table -->
+  <div id="attendance-table-wrap" class="attendance-table-wrap" hidden>
+    <table class="attendance-table">
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>Student Name</th>
+          <th>Gender</th>
+          <th>Status</th>
+          <th>Time In</th>
+        </tr>
+      </thead>
+      <tbody id="attendance-tbody"></tbody>
+    </table>
+  </div>
+
+  <!-- Empty / loading state -->
+  <div id="attendance-msg" class="placeholder-box">
+    Select a grade level and section to view attendance.
   </div>
 </main>
 
@@ -60,8 +102,48 @@
   <p>Pasig City Science High School — C.A.S.S.I.E.</p>
 </footer>
 
+<!-- ===================== PDF IMPORT MODAL ===================== -->
+<div id="import-modal" class="modal-overlay" hidden>
+  <div class="modal-box">
+    <h2>Import Class List from PDF</h2>
+
+    <!-- Step 1: Upload the PDF -->
+    <div id="import-step-1">
+      <div class="form-field">
+        <label>PDF File</label>
+        <div id="pdf-dropzone" class="upload-dropzone">
+          <span id="pdf-dropzone-text">📄 Click to choose a PDF, or drag it here</span>
+        </div>
+        <input type="file" id="pdf-file-input" accept=".pdf" hidden>
+      </div>
+      <p id="pdf-parse-status" class="status-text"></p>
+    </div>
+
+    <!-- Step 2: Review all detected sections before saving -->
+    <div id="import-step-2" hidden>
+      <p id="import-sections-summary" class="status-text" style="margin-bottom:14px;"></p>
+
+      <!-- Scrollable list of section cards — populated by JS -->
+      <div id="import-sections-list" class="import-sections-list"></div>
+
+      <!-- Shared "add student" button shown inside whichever section is expanded -->
+    </div>
+
+    <p id="import-save-status" class="status-text" style="margin-top:12px;min-height:1.4em;"></p>
+    <div class="modal-footer">
+      <button type="button" id="import-cancel-btn" class="btn-secondary">Cancel</button>
+      <button type="button" id="import-save-btn" class="btn-primary" hidden>Save All Sections</button>
+    </div>
+  </div>
+</div>
+<!-- =========================================================== -->
+
+<!-- PDF.js loaded as a regular script (sets window.pdfjsLib) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script type="module" src="attendance.js"></script>
 <script type="module" src="auth-ui.js"></script>
 <script src="nav.js"></script>
+<script type="module" src="suspension-banner.js"></script>
 <script src="theme.js"></script>
 </body>
 </html>
