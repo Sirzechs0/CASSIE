@@ -366,6 +366,243 @@ main { max-width: 1080px; margin: 0 auto; padding: 40px 24px 64px; }
 }
 .faq-delete-btn:hover { text-decoration: underline; }
 
+/* ---------- Delete buttons (attendance) ---------- */
+.delete-student-btn {
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.82rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: color 0.15s var(--ease), background-color 0.15s var(--ease);
+  white-space: nowrap;
+}
+.delete-student-btn:hover {
+  color: var(--error);
+  background: rgba(255, 100, 100, 0.08);
+}
+
+.delete-section-btn {
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.78rem;
+  padding: 6px 12px;
+  white-space: nowrap;
+  transition: color 0.15s var(--ease), border-color 0.15s var(--ease),
+              background-color 0.15s var(--ease);
+  flex-shrink: 0;
+}
+.delete-section-btn:hover {
+  color: var(--error);
+  border-color: var(--error);
+  background: rgba(255, 100, 100, 0.06);
+}
+
+/* ---------- Reports page ---------- */
+
+/* Month picker */
+.month-picker {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.month-label {
+  font-size: 1.05rem;
+  font-weight: 700;
+  min-width: 140px;
+  text-align: center;
+}
+.month-nav-btn {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  width: 36px; height: 36px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.15s var(--ease), transform 0.1s var(--ease);
+}
+.month-nav-btn:hover { background: var(--surface-hover); transform: scale(1.05); }
+
+/* Overview stat cards */
+.report-overview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.report-stat-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.report-stat-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+.report-stat-card strong {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+.report-stat-sub {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+/* Calendar */
+.report-calendar-wrap {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+.calendar-day-headers {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  background: var(--surface-hover);
+  border-bottom: 1px solid var(--line);
+}
+.calendar-day-headers span {
+  text-align: center;
+  padding: 10px 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+.report-calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+  background: var(--line);
+}
+.cal-cell {
+  background: var(--surface);
+  padding: 10px 8px;
+  min-height: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: default;
+  transition: background-color 0.15s var(--ease);
+}
+.cal-cell.empty { background: var(--paper); }
+.cal-cell.has-data { cursor: pointer; }
+.cal-cell.has-data:hover { background: var(--surface-hover); }
+.cal-cell.selected { background: var(--surface-hover); outline: 2px solid var(--ink); }
+.cal-cell.today .cal-day-num { font-weight: 700; color: var(--ink); }
+
+.cal-day-num {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1;
+}
+.cal-cell.has-data .cal-day-num { color: var(--ink); font-weight: 600; }
+
+/* Attendance rate dot inside each calendar day */
+.cal-dot {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+.cal-dot.rate-great { background: rgba(76,175,80,0.18); color: #4caf50; }   /* ≥90% */
+.cal-dot.rate-good  { background: rgba(255,193,7,0.18);  color: #ffc107; }  /* 70-89% */
+.cal-dot.rate-poor  { background: rgba(244,67,54,0.18);  color: #f44336; }  /* <70% */
+.cal-dot.rate-none  { background: var(--line); color: var(--muted); }       /* no data */
+
+/* Day detail panel */
+.day-detail-panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 22px;
+  margin-bottom: 24px;
+  box-shadow: 0 6px 20px var(--shadow);
+}
+.day-detail-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.day-detail-header h2 { font-size: 1.1rem; margin: 0; }
+.day-detail-stats { display: flex; gap: 20px; font-size: 0.88rem; flex-wrap: wrap; }
+.day-detail-stats span strong { display: block; font-size: 1.1rem; }
+.dd-rate { font-weight: 700; font-size: 1rem; color: #4caf50; }
+
+/* Report section header */
+.report-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.report-section-header h2 { font-size: 1.1rem; margin: 0; }
+
+/* Summary table rate column */
+.report-table-wrap {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 32px;
+}
+.rate-great { color: #4caf50; font-weight: 700; }
+.rate-good  { color: #ffc107; font-weight: 700; }
+.rate-poor  { color: #f44336; font-weight: 700; }
+
+/* Loading shimmer for calendar cells */
+.cal-cell.loading {
+  animation: shimmer 1.2s infinite;
+}
+@keyframes shimmer {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+/* Print styles */
+@media print {
+  .site-header, .site-footer, .tab-bar, .month-picker,
+  #print-btn, .day-detail-panel, nav, .nav-toggle,
+  .theme-toggle, .login-link, #logout-button { display: none !important; }
+  body { background: #fff; color: #000; }
+  .report-overview, .report-calendar-wrap { break-inside: avoid; }
+  .report-stat-card { border: 1px solid #ccc; }
+  #summary-wrap { break-inside: avoid; }
+  main { padding: 0; }
+  .page-header h1::after {
+    content: attr(data-section);
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: #666;
+  }
+}
+
 /* ---------- Footer ---------- */
 .site-footer {
   background: var(--surface);
@@ -440,10 +677,12 @@ main { max-width: 1080px; margin: 0 auto; padding: 40px 24px 64px; }
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
-  overflow: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .attendance-table {
   width: 100%;
+  min-width: 640px;
   border-collapse: collapse;
   font-size: 0.88rem;
 }
@@ -627,3 +866,20 @@ main { max-width: 1080px; margin: 0 auto; padding: 40px 24px 64px; }
   transition: color 0.15s;
 }
 .remove-row-btn:hover { color: var(--error); }
+
+/* ---------- Confirmation modal (delete confirmations) ---------- */
+/* Reuses .modal-overlay / .modal-box; centered instead of top-anchored since
+   this dialog is short, unlike the tall scrolling import modal. */
+#confirm-modal { align-items: center; }
+.modal-box.confirm-box { max-width: 400px; }
+.confirm-message { color: var(--muted); font-size: 0.92rem; line-height: 1.5; margin: 0 0 22px; }
+
+.btn-danger {
+  padding: 11px 20px; background: var(--error); color: var(--paper);
+  border: none; border-radius: var(--radius-sm);
+  font-size: 0.92rem; font-weight: 600; cursor: pointer;
+  transition: opacity 0.18s var(--ease), transform 0.15s var(--ease);
+}
+.btn-danger:hover { opacity: 0.85; transform: translateY(-1px); }
+.btn-danger:active { transform: scale(0.97); }
+.btn-danger:disabled { opacity: 0.5; cursor: not-allowed; }

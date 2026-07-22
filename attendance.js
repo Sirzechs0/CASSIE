@@ -3,7 +3,7 @@
 // • PCSHS-format parser (MALE/FEMALE headers, no M/F column per row)
 // • Multi-section import from a single PDF
 // • Grade/section tab navigation
-// • Click-to-mark attendance with auto-late detection
+// • Click-to-mark attendance: manual Absent → Present → Late cycle
 
 import { auth, db } from "./firebase-config.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
@@ -11,10 +11,6 @@ import {
   collection, doc, getDoc, getDocs, setDoc, deleteDoc, writeBatch,
   query, orderBy, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
-
-// ─── CONFIG ───────────────────────────────────────────────────────────────────
-const LATE_HOUR   = 7;
-const LATE_MINUTE = 30;
 
 if (window.pdfjsLib) {
   window.pdfjsLib.GlobalWorkerOptions.workerSrc =
@@ -185,7 +181,7 @@ function renderTable() {
   currentStudents.forEach((student) => {
     const rec    = attendanceRecs[student.id];
     const status = rec ? rec.status : "absent";
-    const timeIn = rec ? rec.timeIn : "—";
+    const timeIn = rec && rec.timeIn ? rec.timeIn : "—";
     if (status === "present") present++;
     else if (status === "late") late++;
     else absent++;
@@ -217,21 +213,27 @@ function renderTable() {
 }
 
 // ─── MARK ATTENDANCE ──────────────────────────────────────────────────────────
+// Manual 3-state cycle: Absent → Present → Late → Absent. It's the secretary's
+// call, not the clock's — the old version checked the current time at the
+// moment of the click, so clicking any time after the cutoff sent every
+// student straight to "late" and "present" became unreachable. Only "Late"
+// records a time (worth knowing how late); Present/Absent don't need one.
 async function markAttendance(studentId) {
   const rec    = attendanceRecs[studentId];
   const status = rec ? rec.status : "absent";
   let newStatus, newTimeIn;
+
   if (status === "absent") {
-    const now    = new Date();
-    const isLate = now.getHours() > LATE_HOUR ||
-      (now.getHours() === LATE_HOUR && now.getMinutes() >= LATE_MINUTE);
-    newStatus = isLate ? "late" : "present";
-    newTimeIn = now.toLocaleTimeString("en-PH", { hour: "numeric", minute: "2-digit", hour12: true });
+    newStatus = "present";
+    newTimeIn = null;
   } else if (status === "present") {
-    newStatus = "late"; newTimeIn = rec.timeIn;
+    newStatus = "late";
+    newTimeIn = new Date().toLocaleTimeString("en-PH", { hour: "numeric", minute: "2-digit", hour12: true });
   } else {
-    newStatus = "absent"; newTimeIn = null;
+    newStatus = "absent";
+    newTimeIn = null;
   }
+
   if (newStatus === "absent") delete attendanceRecs[studentId];
   else attendanceRecs[studentId] = { status: newStatus, timeIn: newTimeIn };
   renderTable();
@@ -243,9 +245,47 @@ async function markAttendance(studentId) {
   } catch (e) { console.error("Save failed:", e); }
 }
 
+// ─── CONFIRM MODAL (themed replacement for window.confirm) ────────────────────
+const confirmModal     = document.getElementById("confirm-modal");
+const confirmTitleEl   = document.getElementById("confirm-title");
+const confirmMessageEl = document.getElementById("confirm-message");
+const confirmOkBtn     = document.getElementById("confirm-ok-btn");
+const confirmCancelBtn = document.getElementById("confirm-cancel-btn");
+
+// Shows the shared confirm modal and resolves true/false depending on the
+// button clicked — same calling convention as window.confirm(), just async.
+function askConfirm({ title = "Are you sure?", message = "", confirmLabel = "Delete" } = {}) {
+  return new Promise((resolve) => {
+    confirmTitleEl.textContent   = title;
+    confirmMessageEl.textContent = message;
+    confirmOkBtn.textContent     = confirmLabel;
+    confirmModal.hidden = false;
+
+    function settle(result) {
+      confirmModal.hidden = true;
+      confirmOkBtn.removeEventListener("click", onOk);
+      confirmCancelBtn.removeEventListener("click", onCancel);
+      confirmModal.removeEventListener("click", onOverlay);
+      resolve(result);
+    }
+    function onOk()       { settle(true); }
+    function onCancel()   { settle(false); }
+    function onOverlay(e) { if (e.target === confirmModal) settle(false); }
+
+    confirmOkBtn.addEventListener("click", onOk);
+    confirmCancelBtn.addEventListener("click", onCancel);
+    confirmModal.addEventListener("click", onOverlay);
+  });
+}
+
 // ─── DELETE ONE STUDENT ───────────────────────────────────────────────────────
 async function deleteStudent(studentId, studentName) {
-  if (!window.confirm(`Remove "${studentName}" from this section?\n\nThis cannot be undone.`)) return;
+  const confirmed = await askConfirm({
+    title: "Remove student?",
+    message: `Remove "${studentName}" from this section? This can't be undone.`,
+    confirmLabel: "Remove",
+  });
+  if (!confirmed) return;
   try {
     await deleteDoc(doc(db, "sections", currentSection.id, "students", studentId));
     currentStudents = currentStudents.filter(s => s.id !== studentId);
@@ -267,10 +307,12 @@ async function deleteStudent(studentId, studentName) {
 async function deleteSection() {
   if (!currentSection) return;
   const label = `Grade ${currentSection.grade} – ${currentSection.name}`;
-  if (!window.confirm(
-    `Delete the entire "${label}" section?\n\n` +
-    `This permanently removes all ${currentStudents.length} students and cannot be undone.`
-  )) return;
+  const confirmed = await askConfirm({
+    title: "Delete this section?",
+    message: `Delete the entire "${label}" section? This permanently removes all ${currentStudents.length} students and can't be undone.`,
+    confirmLabel: "Delete Section",
+  });
+  if (!confirmed) return;
 
   const sectionId = currentSection.id;
   try {
