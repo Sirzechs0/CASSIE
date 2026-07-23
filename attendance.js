@@ -3,7 +3,7 @@
 // • PCSHS-format parser (MALE/FEMALE headers, no M/F column per row)
 // • Multi-section import from a single PDF
 // • Grade/section tab navigation
-// • Click-to-mark attendance: manual Absent → Present → Late cycle
+// • Click-to-mark attendance: manual Present → Absent → Late cycle
 
 import { auth, db } from "./firebase-config.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
@@ -180,7 +180,7 @@ function renderTable() {
 
   currentStudents.forEach((student) => {
     const rec    = attendanceRecs[student.id];
-    const status = rec ? rec.status : "absent";
+    const status = rec ? rec.status : "present";
     const timeIn = rec && rec.timeIn ? rec.timeIn : "—";
     if (status === "present") present++;
     else if (status === "late") late++;
@@ -220,22 +220,23 @@ function renderTable() {
 // records a time (worth knowing how late); Present/Absent don't need one.
 async function markAttendance(studentId) {
   const rec    = attendanceRecs[studentId];
-  const status = rec ? rec.status : "absent";
+  const status = rec ? rec.status : "present";
   let newStatus, newTimeIn;
 
-  if (status === "absent") {
-    newStatus = "present";
-    newTimeIn = null;
-  } else if (status === "present") {
+  if (status === "present") {
     newStatus = "late";
     newTimeIn = new Date().toLocaleTimeString("en-PH", { hour: "numeric", minute: "2-digit", hour12: true });
-  } else {
+  } else if (status === "late") {
     newStatus = "absent";
+    newTimeIn = null;
+  } else {
+    newStatus = "present";
     newTimeIn = null;
   }
 
-  if (newStatus === "absent") delete attendanceRecs[studentId];
+  if (newStatus === "present") delete attendanceRecs[studentId];
   else attendanceRecs[studentId] = { status: newStatus, timeIn: newTimeIn };
+  
   renderTable();
   try {
     await setDoc(doc(db, "attendance", `${currentSection.id}_${dateStr}`), {
